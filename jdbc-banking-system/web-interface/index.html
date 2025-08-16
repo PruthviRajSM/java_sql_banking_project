@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏦 Banking Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <h1>Java OOP Banking System</h1>
+            </div>
+            <div class="header-stats">
+                <div class="stat">
+                    <i class="fas fa-users"></i>
+                    <span id="customerCount">0</span>
+                    <label>Customers</label>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-credit-card"></i>
+                    <span id="accountCount">0</span>
+                    <label>Accounts</label>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span id="transactionCount">0</span>
+                    <label>Transactions</label>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <button class="nav-btn active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </button>
+            <button class="nav-btn" data-section="customers">
+                <i class="fas fa-users"></i>
+                Customers
+            </button>
+            <button class="nav-btn" data-section="accounts">
+                <i class="fas fa-credit-card"></i>
+                Accounts
+            </button>
+            <button class="nav-btn" data-section="transactions">
+                <i class="fas fa-exchange-alt"></i>
+                Transactions
+            </button>
+            <button class="nav-btn" data-section="reports">
+                <i class="fas fa-chart-bar"></i>
+                Reports
+            </button>
+            <button class="nav-btn" data-section="admin">
+                <i class="fas fa-cog"></i>
+                Admin
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                    <p>Welcome to your banking management system</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3>Quick Actions</h3>
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="showSection('customers')">
+                                <i class="fas fa-user-plus"></i>
+                                Add Customer
+                            </button>
+                            <button class="action-btn" onclick="showSection('accounts')">
+                                <i class="fas fa-plus-circle"></i>
+                                Create Account
+                            </button>
+                            <button class="action-btn" onclick="showSection('transactions')">
+                                <i class="fas fa-money-bill-wave"></i>
+                                New Transaction
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>System Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number" id="totalCustomers">0</span>
+                                <span class="stat-label">Total Customers</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="totalAccounts">0</span>
+                                <span class="stat-label">Total Accounts</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="totalTransactions">0</span>
+                                <span class="stat-label">Total Transactions</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="totalBalance">$0</span>
+                                <span class="stat-label">Total Balance</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Recent Activity</h3>
+                        <div class="recent-activity" id="recentActivity">
+                            <div class="activity-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>No recent activity</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Customers Section -->
+            <section id="customers" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Customer Management</h2>
+                    <button class="btn btn-primary" onclick="showModal('addCustomerModal')">
+                        <i class="fas fa-plus"></i> Add Customer
+                    </button>
+                </div>
+
+                <div class="search-bar">
+                    <input type="text" id="customerSearch" placeholder="Search customers by name or email...">
+                    <button class="btn btn-secondary" onclick="searchCustomers()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="customersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Email</th>
+                                <th>Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody">
+                            <!-- Customer data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Accounts Section -->
+            <section id="accounts" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-credit-card"></i> Account Management</h2>
+                    <button class="btn btn-primary" onclick="showModal('addAccountModal')">
+                        <i class="fas fa-plus"></i> Create Account
+                    </button>
+                </div>
+
+                <div class="search-bar">
+                    <input type="text" id="accountSearch" placeholder="Search accounts by customer name...">
+                    <button class="btn btn-secondary" onclick="searchAccounts()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="accountsTable">
+                        <thead>
+                            <tr>
+                                <th>Account ID</th>
+                                <th>Customer</th>
+                                <th>Type</th>
+                                <th>Balance</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountsTableBody">
+                            <!-- Account data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-exchange-alt"></i> Transaction Operations</h2>
+                </div>
+
+                <div class="transaction-cards">
+                    <div class="transaction-card">
+                        <h3><i class="fas fa-money-bill-wave"></i> Deposit</h3>
+                        <form id="depositForm" class="transaction-form">
+                            <div class="form-group">
+                                <label>Account ID:</label>
+                                <input type="number" id="depositAccountId" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount ($):</label>
+                                <input type="number" id="depositAmount" step="0.01" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-plus"></i> Deposit
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="transaction-card">
+                        <h3><i class="fas fa-hand-holding-usd"></i> Withdraw</h3>
+                        <form id="withdrawForm" class="transaction-form">
+                            <div class="form-group">
+                                <label>Account ID:</label>
+                                <input type="number" id="withdrawAccountId" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount ($):</label>
+                                <input type="number" id="withdrawAmount" step="0.01" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-minus"></i> Withdraw
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="transaction-card">
+                        <h3><i class="fas fa-exchange-alt"></i> Transfer</h3>
+                        <form id="transferForm" class="transaction-form">
+                            <div class="form-group">
+                                <label>From Account ID:</label>
+                                <input type="number" id="transferFromId" required>
+                            </div>
+                            <div class="form-group">
+                                <label>To Account ID:</label>
+                                <input type="number" id="transferToId" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount ($):</label>
+                                <input type="number" id="transferAmount" step="0.01" required>
+                            </div>
+                            <button type="submit" class="btn btn-info">
+                                <i class="fas fa-exchange-alt"></i> Transfer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="recent-transactions">
+                    <h3>Recent Transactions</h3>
+                    <div class="table-container">
+                        <table class="data-table" id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Type</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody">
+                                <!-- Transaction data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-bar"></i> Reports & Analytics</h2>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h3>Account Transaction History</h3>
+                        <form class="report-form">
+                            <div class="form-group">
+                                <label>Account ID:</label>
+                                <input type="number" id="reportAccountId">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="getTransactionHistory()">
+                                <i class="fas fa-search"></i> Get History
+                            </button>
+                        </form>
+                        <div id="transactionHistory" class="report-results"></div>
+                    </div>
+
+                    <div class="report-card">
+                        <h3>System Statistics</h3>
+                        <div class="stats-display" id="systemStats">
+                            <!-- System stats will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Section -->
+            <section id="admin" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+                </div>
+
+                <div class="admin-grid">
+                    <div class="admin-card">
+                        <h3>System Overview</h3>
+                        <div class="admin-stats">
+                            <div class="admin-stat">
+                                <span class="stat-label">Total Customers:</span>
+                                <span class="stat-value" id="adminCustomerCount">0</span>
+                            </div>
+                            <div class="admin-stat">
+                                <span class="stat-label">Total Accounts:</span>
+                                <span class="stat-value" id="adminAccountCount">0</span>
+                            </div>
+                            <div class="admin-stat">
+                                <span class="stat-label">Total Transactions:</span>
+                                <span class="stat-value" id="adminTransactionCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>Database Operations</h3>
+                        <div class="admin-actions">
+                            <button class="btn btn-danger" onclick="clearAllData()">
+                                <i class="fas fa-trash"></i> Clear All Data
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportData()">
+                                <i class="fas fa-download"></i> Export Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Customer Modal -->
+    <div id="addCustomerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Add New Customer</h3>
+                <span class="close" onclick="closeModal('addCustomerModal')">&times;</span>
+            </div>
+            <form id="addCustomerForm" class="modal-form">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Age:</label>
+                    <input type="number" id="customerAge" min="18" max="120" required>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="customerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Number:</label>
+                    <input type="tel" id="customerContact" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Add Customer</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addCustomerModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Account Modal -->
+    <div id="addAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus-circle"></i> Create New Account</h3>
+                <span class="close" onclick="closeModal('addAccountModal')">&times;</span>
+            </div>
+            <form id="addAccountForm" class="modal-form">
+                <div class="form-group">
+                    <label>Customer ID:</label>
+                    <input type="number" id="accountCustomerId" required>
+                </div>
+                <div class="form-group">
+                    <label>Account Type:</label>
+                    <select id="accountType" required>
+                        <option value="SAVINGS">Savings Account</option>
+                        <option value="CURRENT">Current Account</option>
+                        <option value="FIXED_DEPOSIT">Fixed Deposit Account</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Initial Balance ($):</label>
+                    <input type="number" id="accountBalance" step="0.01" min="0" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addAccountModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
